@@ -2,7 +2,6 @@ package com.asitenciatecnica.asistencia_tecnica.controller;
 
 import com.asitenciatecnica.asistencia_tecnica.entity.Tecnico;
 import com.asitenciatecnica.asistencia_tecnica.service.TecnicoService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +35,7 @@ public class TecnicoController {
     @PostMapping("/crear")
     public ResponseEntity<Tecnico> createTecnico(@RequestBody Tecnico tecnico){
         tecnicoService.saveTecnico(tecnico);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(tecnico, HttpStatus.CREATED);
     }
 
     @PutMapping("/editar/{id}")

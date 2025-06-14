@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "tecnicos")
@@ -25,7 +25,7 @@ public class Tecnico {
     private String cedula;
 
     @Column(nullable = false)
-    private Date fecha_nacimiento;
+    private LocalDate fecha_nacimiento;
 
     @Column(length = 10, nullable = false)
     private String genero;
@@ -39,7 +39,7 @@ public class Tecnico {
     @Column(unique = true, length = 10, nullable = false)
     private String telefono;
 
-    @Column(unique = true, length = 20, nullable = false)
+    @Column(unique = true, length = 45, nullable = false)
     private String email;
 
 }
