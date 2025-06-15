@@ -1,5 +1,7 @@
 package com.asitenciatecnica.asistencia_tecnica.service;
 
+import com.asitenciatecnica.asistencia_tecnica.dto.ClienteDTO;
+import com.asitenciatecnica.asistencia_tecnica.dto.TecnicoDTO;
 import com.asitenciatecnica.asistencia_tecnica.dto.TicketDTO;
 import com.asitenciatecnica.asistencia_tecnica.entity.Ticket;
 import com.asitenciatecnica.asistencia_tecnica.repository.ITicketRepository;
@@ -43,19 +45,27 @@ public class TicketService implements ITicketService {
     }
 
     private TicketDTO convertToDTO(Ticket ticket) {
+
         TicketDTO dto = new TicketDTO();
+
         dto.setId(ticket.getId());
         dto.setCodigo(ticket.getCodigo());
         dto.setDescripcion(ticket.getDescripcion());
 
-        if (ticket.getTecnico() != null) {
-            dto.setNombreTecnico(ticket.getTecnico().getNombre());
-            dto.setApellidoTecnico(ticket.getTecnico().getApellido());
+        if(ticket.getTecnico() != null){
+            TecnicoDTO tecnicoDTO = new TecnicoDTO();
+            tecnicoDTO.setId_tecnico(ticket.getTecnico().getId_tecnico());
+            tecnicoDTO.setNombre(ticket.getTecnico().getNombre());
+            tecnicoDTO.setApellido(ticket.getTecnico().getApellido());
+            dto.setTecnico(tecnicoDTO);
         }
 
-        if (ticket.getCliente() != null) {
-            dto.setNombreCliente(ticket.getCliente().getNombre());
-            dto.setApellidoCliente(ticket.getCliente().getApellido());
+        if  (ticket.getCliente() != null){
+            ClienteDTO clienteDTO = new ClienteDTO();
+            clienteDTO.setId_cliente(ticket.getCliente().getId_cliente());
+            clienteDTO.setNombre(ticket.getCliente().getNombre());
+            clienteDTO.setApellido(ticket.getCliente().getApellido());
+            dto.setCliente(clienteDTO);
         }
 
         return dto;

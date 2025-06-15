@@ -9,8 +9,6 @@ public class TicketDTO {
     private int id;
     private int codigo;
     private String descripcion;
-    private String nombreTecnico;
-    private String apellidoTecnico;
-    private String nombreCliente;
-    private String apellidoCliente;
+    private TecnicoDTO tecnico;
+    private ClienteDTO cliente;
 }

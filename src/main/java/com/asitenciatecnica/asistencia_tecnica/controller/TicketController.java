@@ -1,5 +1,7 @@
 package com.asitenciatecnica.asistencia_tecnica.controller;
 
+import com.asitenciatecnica.asistencia_tecnica.dto.ClienteDTO;
+import com.asitenciatecnica.asistencia_tecnica.dto.TecnicoDTO;
 import com.asitenciatecnica.asistencia_tecnica.dto.TicketDTO;
 import com.asitenciatecnica.asistencia_tecnica.entity.Cliente;
 import com.asitenciatecnica.asistencia_tecnica.entity.Tecnico;
@@ -39,14 +41,27 @@ public class TicketController {
         if(ticket == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
         TicketDTO ticketDTO = new TicketDTO();
         ticketDTO.setId(ticket.getId());
         ticketDTO.setCodigo(ticket.getCodigo());
         ticketDTO.setDescripcion(ticket.getDescripcion());
-        ticketDTO.setNombreTecnico(ticket.getTecnico().getNombre());
-        ticketDTO.setApellidoTecnico(ticket.getTecnico().getApellido());
-        ticketDTO.setNombreCliente(ticket.getCliente().getNombre());
-        ticketDTO.setApellidoCliente(ticket.getCliente().getApellido());
+
+        if(ticket.getTecnico() != null){
+            TecnicoDTO tecnicoDTO = new TecnicoDTO();
+            tecnicoDTO.setId_tecnico(ticket.getTecnico().getId_tecnico());
+            tecnicoDTO.setNombre(ticket.getTecnico().getNombre());
+            tecnicoDTO.setApellido(ticket.getTecnico().getApellido());
+            ticketDTO.setTecnico(tecnicoDTO);
+        }
+
+        if  (ticket.getCliente() != null){
+            ClienteDTO clienteDTO = new ClienteDTO();
+            clienteDTO.setId_cliente(ticket.getCliente().getId_cliente());
+            clienteDTO.setNombre(ticket.getCliente().getNombre());
+            clienteDTO.setApellido(ticket.getCliente().getApellido());
+            ticketDTO.setCliente(clienteDTO);
+        }
 
         return new ResponseEntity<>(ticketDTO, HttpStatus.OK);
     }
@@ -58,7 +73,7 @@ public class TicketController {
     }
 
     @PutMapping("/editar/{id}")
-    public ResponseEntity<Ticket> editTicket(@PathVariable int id, @RequestBody Ticket ticket){
+    public ResponseEntity<TicketDTO> editTicket(@PathVariable int id, @RequestBody Ticket ticket){
         Ticket ticketExistente = ticketService.findTicketById(id);
 
         if(ticketExistente == null){
@@ -88,8 +103,11 @@ public class TicketController {
             }
         }
 
-        ticketService.saveTicket(ticket);
-        return new ResponseEntity<>(ticket, HttpStatus.OK);
+        Ticket ticketActualizado = ticketService.updateTicket(ticketExistente);
+
+        TicketDTO ticketDTO = mapToDTO(ticketActualizado);
+
+        return new ResponseEntity<>(ticketDTO, HttpStatus.OK);
     }
 
     @DeleteMapping("/eliminar/{id}")
@@ -104,4 +122,30 @@ public class TicketController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    private TicketDTO mapToDTO(Ticket ticket) {
+        TicketDTO dto = new TicketDTO();
+        dto.setId(ticket.getId());
+        dto.setCodigo(ticket.getCodigo());
+        dto.setDescripcion(ticket.getDescripcion());
+
+        if (ticket.getTecnico() != null) {
+            TecnicoDTO tecnicoDTO = new TecnicoDTO();
+            tecnicoDTO.setId_tecnico(ticket.getTecnico().getId_tecnico());
+            tecnicoDTO.setNombre(ticket.getTecnico().getNombre());
+            tecnicoDTO.setApellido(ticket.getTecnico().getApellido());
+            dto.setTecnico(tecnicoDTO);
+        }
+
+        if (ticket.getCliente() != null) {
+            ClienteDTO clienteDTO = new ClienteDTO();
+            clienteDTO.setId_cliente(ticket.getCliente().getId_cliente());
+            clienteDTO.setNombre(ticket.getCliente().getNombre());
+            clienteDTO.setApellido(ticket.getCliente().getApellido());
+            dto.setCliente(clienteDTO);
+        }
+
+        return dto;
+    }
+
 }
