@@ -1,5 +1,6 @@
 package com.asitenciatecnica.asistencia_tecnica.controller;
 
+import com.asitenciatecnica.asistencia_tecnica.dto.TicketDTO;
 import com.asitenciatecnica.asistencia_tecnica.entity.Cliente;
 import com.asitenciatecnica.asistencia_tecnica.entity.Tecnico;
 import com.asitenciatecnica.asistencia_tecnica.entity.Ticket;
@@ -27,19 +28,27 @@ public class TicketController {
     private IClienteRepository clienteRepository;
 
     @GetMapping
-    public ResponseEntity<List<Ticket>> getAllTickets(){
+    public ResponseEntity<List<TicketDTO>> getAllTickets(){
         return ResponseEntity.ok(ticketService.findAllTickets());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Ticket> getTicketById(@PathVariable int id){
+    public ResponseEntity<TicketDTO> getTicketById(@PathVariable int id){
         Ticket ticket = ticketService.findTicketById(id);
 
         if(ticket == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        TicketDTO ticketDTO = new TicketDTO();
+        ticketDTO.setId(ticket.getId());
+        ticketDTO.setCodigo(ticket.getCodigo());
+        ticketDTO.setDescripcion(ticket.getDescripcion());
+        ticketDTO.setNombreTecnico(ticket.getTecnico().getNombre());
+        ticketDTO.setApellidoTecnico(ticket.getTecnico().getApellido());
+        ticketDTO.setNombreCliente(ticket.getCliente().getNombre());
+        ticketDTO.setApellidoCliente(ticket.getCliente().getApellido());
 
-        return new ResponseEntity<>(ticket, HttpStatus.OK);
+        return new ResponseEntity<>(ticketDTO, HttpStatus.OK);
     }
 
     @PostMapping("/crear")

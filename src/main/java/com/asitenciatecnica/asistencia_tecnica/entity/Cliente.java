@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "clientes")
@@ -28,21 +28,18 @@ public class Cliente {
     @Column(nullable = false, length = 20)
     private String ciudad;
 
-    @Column(unique = true, nullable = false, length = 20)
+    @Column(unique = true, nullable = false, length = 40)
     private String email;
 
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false, length = 20)
     private String direccion;
 
     @Column(unique = true, nullable = false, length = 10)
     private String telefono;
 
     @Column(nullable = false)
-    private Date fecha_nacimiento;
+    private LocalDate fecha_nacimiento;
 
     @Column(length = 20)
     private String dependencia;
-
-
-
 }
