@@ -88,4 +88,10 @@ Puedes correr el backend directamente desde tu IDE o desde consola:
 
 - Las tablas se generan automáticamente mediante JPA.
 
+## 🗺️ Diagrama entidad-relación
+
+Este diagrama muestra la relación entre las entidades principales de la aplicación:
+
+![Diagrama ER](docs/images/diagrama-er.png)
+
 
